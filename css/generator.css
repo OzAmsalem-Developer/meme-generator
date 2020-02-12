@@ -1,0 +1,9 @@
+.generator-container {
+    padding: 15px;
+    justify-content: space-between;
+}
+
+.generator-container > * {
+    width: 50%;
+}
+

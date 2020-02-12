@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/helpers.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/generator.css">
+    <title>Meme Generator</title>
+</head>
+<body onload="onInit()">
+
+<nav class="main-nav"></nav>
+    
+<section class="gallery-container ">
+    <h2>Choose image to make a meme from</h2>
+    <section class="imgs-container grid"></section>
+</section>
+
+    
+
+<section class="generator-container flex">
+
+    <div class="canvas-container">
+        <canvas id="my-canvas" height="500" width="500"  style="border: 1px solid black;">
+    </canvas>
+    </div>
+
+    <nav class="generator-nav">
+        <input type="text" onkeyup="onTypeText(this.value)" placeholder="Edit meme text here">
+        <input type="color" value="#ffffff" class="txt-color" onchange="onSetTxtColor(this.value)">
+        <input type="color" class="txt-color" onchange="onSetStrokeColor(this.value)">
+        <button class="align-btn" onclick="onSetTxtAlign('left')">Right</button>
+        <button class="align-btn" onclick="onSetTxtAlign('center')">Center</button>
+        <button class="align-btn" onclick="onSetTxtAlign('right')">Left</button>
+        <button class="size-btn" onclick="onSetTxtSize('+')">A+</button>
+        <button class="size-btn" onclick="onSetTxtSize('-')">A-</button>
+        <button class="add-line-btn">Add Text</button>
+        <button class="switch-btn" onclick="onSwitchLine()">Switch</button>
+    </nav>
+</section>
+
+<footer></footer>
+
+    <script src="libs/jquery/jquery.js"></script>
+    <script src="js/utils-service.js"></script>
+    <script src="js/meme-service.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
