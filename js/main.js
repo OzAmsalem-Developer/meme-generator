@@ -5,6 +5,8 @@ var gCtx;
 
 function onInit() {
     $('.generator-container').hide();
+    $('.add-line').hide();
+
     _renderGallery();
     gCanvas = document.getElementById('my-canvas');
     gCanvas.width = $(window).width() / 2 - 20;
@@ -19,32 +21,46 @@ function onSelectImg(imgId) {
     _drawMeme();
 }
 
-function onTypeText(txt) {
-    console.log(txt);
-    setMemeProp('txt', txt, true)
-    _drawMeme();
-}
-
-function onSetTxtColor(color) {
-    setMemeProp('fillColor', color, true);
-    _drawMeme();
-}
-
-function onSetStrokeColor(color) {
-    setMemeProp('strokeColor', color, true);
-    _drawMeme();
-}
-
-function onSetTxtAlign(align) {
-    setMemeProp('align', align, true);
+function onSetMemeProp(prop, val, isLineProp) {
+    setMemeProp(prop, val, isLineProp);
     _drawMeme();
 }
 
 function onSetTxtSize(op) {
-    let currSize = getLineSize();
-    let newSize = (op === '+')? ++currSize : --currSize;
+    let currSize = getLineInfo('size');
+    let newSize = (op === '+') ? ++currSize : --currSize;
     setMemeProp('size', newSize, true);
     _drawMeme();
+}
+
+function onAddLine() {
+    $('.add-line').hide();
+    let txt = $('.new-line-txt').val();
+    addLine(txt);
+    _drawMeme();
+    onSwitchLine();
+    $('.new-line-txt').val('');
+}
+
+// function onMoveLine(direction) {
+
+// }
+
+function onRemoveLine() {
+    removaLine();
+    _drawMeme();
+    onSwitchLine();
+}
+
+function toggleAddLine() {
+    $('.add-line').toggle();
+}
+
+function onSwitchLine() {
+    switchLine();
+    let txt = getLineInfo('txt');
+    $('.meme-txt').val(txt);
+    _drawTxtBorder(getLineInfo('area'))
 }
 
 // Private Functions
@@ -68,18 +84,36 @@ function _drawMeme() {
 }
 
 function _drawTextLines(lines) {
-    lines.forEach((line,idx) => {
-        let xStart = gCanvas.width / 2;
-        let yStart = (idx === 0)? 60 : (idx === 1) ? gCanvas.height - 60 : gCanvas.height/2;
-        xStart += (line.align === 'right')? 60 : (line.align === 'left') ? -60 : 0;
+    lines.forEach((line, idx) => {
+        let xStart;
+        let yStart;
+        
+        if (!line.x || !line.y) {
+            // Line show first time? get this x,y:
+            xStart = gCanvas.width / 2;
+            yStart = (idx === 0) ? 60 : (idx === 1) ? gCanvas.height - 60 : gCanvas.height / 2;
+            setLinePos(xStart, yStart, idx);
+        } else {
+            xStart = line.x;
+            yStart = line.y;
+        }
+        
 
         gCtx.lineWidth = '3';
         gCtx.fillStyle = line.fillColor;
         gCtx.strokeStyle = line.strokeColor;
-        gCtx.font = line.size + 'px Impact';
+        gCtx.font = line.size + 'px ' + line.fontFamily;
         gCtx.textAlign = line.align;
-        gCtx.fillText(line.txt ,xStart,yStart);
-        gCtx.strokeText(line.txt ,xStart,yStart);
+        gCtx.fillText(line.txt, xStart, yStart);
+        gCtx.strokeText(line.txt, xStart, yStart);
+
+        setLineArea(line)
     });
 }
 
+function _drawTxtBorder(lineArea) {
+    gCtx.beginPath()
+    gCtx.rect(lineArea.xStart, lineArea.yStart, lineArea.width, lineArea.height)
+    gCtx.strokeStyle = 'black'
+    gCtx.stroke()
+}

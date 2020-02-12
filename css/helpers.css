@@ -37,3 +37,13 @@
     z-index: 1;
     visibility: hidden;
 }
+
+/* Text size calculator */
+
+.txt-size-calculator {
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap;
+}

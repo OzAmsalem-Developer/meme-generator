@@ -29,21 +29,33 @@
     </canvas>
     </div>
 
-    <nav class="generator-nav">
-        <input type="text" onkeyup="onTypeText(this.value)" placeholder="Edit meme text here">
-        <input type="color" value="#ffffff" class="txt-color" onchange="onSetTxtColor(this.value)">
-        <input type="color" class="txt-color" onchange="onSetStrokeColor(this.value)">
-        <button class="align-btn" onclick="onSetTxtAlign('left')">Right</button>
-        <button class="align-btn" onclick="onSetTxtAlign('center')">Center</button>
-        <button class="align-btn" onclick="onSetTxtAlign('right')">Left</button>
+    <sectio class="generator-controls">
+        <input class="meme-txt" type="text" onkeyup="onSetMemeProp('txt', this.value, true)" placeholder="Edit meme text here">
+        <input type="color" value="#ffffff" class="txt-color" onchange="onSetMemeProp('fillColor', this.value, true)">
+        <input type="color" class="txt-color" onchange="onSetMemeProp('strokeColor' ,this.value, true)">
+        <button class="align-btn" onclick="onSetMemeProp('align', 'end', true)">Left</button>
+        <button class="align-btn" onclick="onSetMemeProp('align', 'center', true)">Center</button>
+        <button class="align-btn" onclick="onSetMemeProp('align', 'start', true)">Right</button>
+        <select onchange="onSetMemeProp('fontFamily', this.value, true)">
+            <option value="Impact">Impact</option>
+            <option value="Ariel">Ariel</option>
+            <option value="monospace">Monospace</option>
+        </select>
         <button class="size-btn" onclick="onSetTxtSize('+')">A+</button>
         <button class="size-btn" onclick="onSetTxtSize('-')">A-</button>
-        <button class="add-line-btn">Add Text</button>
         <button class="switch-btn" onclick="onSwitchLine()">Switch</button>
-    </nav>
+        <button class="add-line-btn" onclick="toggleAddLine()">Add Meme</button>
+        <button class="add-line-btn" onclick="onRemoveLine()">Remove Meme</button>
+        <section class="add-line">
+            <input class="new-line-txt" type="text">
+            <button onclick="onAddLine()">Save</button>
+        </section>
+    </section>
 </section>
 
 <footer></footer>
+
+<div class="txt-size-calculator"></div>
 
     <script src="libs/jquery/jquery.js"></script>
     <script src="js/utils-service.js"></script>

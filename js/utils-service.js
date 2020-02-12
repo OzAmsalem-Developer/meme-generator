@@ -43,22 +43,3 @@ function getClassName(location) {
     let cellClass = 'cell' + location.i + '-' + location.j;
     return cellClass;
 }
-  
-// function renderBooks() {
-//     let books = getBooksForDisplay();
-
-//     let strHTMLs = books.map(function (book) {
-//         let readBtn = `<button data-trans="read-btn" class="action-btn btn" onclick="onOpenModal(${book.id})">Read</button>`;
-//         let updateBtn = `<button data-trans="update-btn" class="action-btn btn" onclick="onEditBook(${book.id})">Update</button>`;
-//         let deleteBtn = `<button data-trans="delete-btn" class="action-btn btn" onclick="onRemoveBook(${book.id})">Delete</button>`;
-
-//         return `
-//         <tr>
-//             <td>${book.id}</td><td>${book.name}</td>
-//             <td>${ formatCurrency(book.price)}</td>
-//             <td>${readBtn}</td><td>${updateBtn}</td><td>${deleteBtn}</td>
-//         </tr>`
-//     }).join('');
-//     let elBookList = document.querySelector('.book-table');
-//     elBookList.innerHTML = strHTMLs;
-// }
