@@ -21,6 +21,10 @@ img.logo {
     font-size: 19px;
 }
 
+.main-nav > * :last-child {
+    padding-right: 0;
+}
+
 .nav-item:hover {
     color: #040a2c;
     cursor: pointer;
