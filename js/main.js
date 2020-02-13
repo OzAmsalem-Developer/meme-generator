@@ -132,6 +132,7 @@ function clickStrokeColor() {
 function resizeCanvas() {
     gCanvas.width = (window.innerWidth < 920)? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
     gCanvas.height = (gCanvas.width > 550) ? 500 : gCanvas.width;
+    _drawMeme()
 }
 
 function touchHandler(event) {

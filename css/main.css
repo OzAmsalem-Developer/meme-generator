@@ -23,6 +23,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Impact';
+    src: url("../fonts/impact/impact.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Base */
 
 html {
