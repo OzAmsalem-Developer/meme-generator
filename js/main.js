@@ -9,11 +9,16 @@ var gMouse = {
 
 function onInit() {
     $('.generator-container').hide();
-    $('.add-line').hide();
+
 
     _renderGallery();
     gCanvas = document.getElementById('my-canvas');
     gCtx = gCanvas.getContext('2d');
+
+    gCanvas.addEventListener("touchstart", touchHandler, true);
+    gCanvas.addEventListener("touchmove", touchHandler, true);
+    gCanvas.addEventListener("touchend", touchHandler, true);
+    gCanvas.addEventListener("touchcancel", touchHandler, true);
 
     gCanvas.width = 500 ;
     gCanvas.height = 500 ;
@@ -121,6 +126,23 @@ function clickStrokeColor() {
 function resizeCanvas() {
     gCanvas.width = (window.innerWidth < 920)? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
     gCanvas.height = gCanvas.width;
+}
+
+function touchHandler(event) {
+    let touch = event.changedTouches[0];
+
+    let simulatedEvent = document.createEvent("MouseEvent");
+        simulatedEvent.initMouseEvent({
+        touchstart: "mousedown",
+        touchmove: "mousemove",
+        touchend: "mouseup"
+    }[event.type], true, true, window, 1,
+        touch.screenX, touch.screenY,
+        touch.clientX, touch.clientY, false,
+        false, false, false, 0, null);
+
+    touch.target.dispatchEvent(simulatedEvent);
+    event.preventDefault();
 }
 
 // Private Functions
