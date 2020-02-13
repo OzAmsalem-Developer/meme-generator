@@ -10,7 +10,6 @@ var gMouse = {
 function onInit() {
     $('.generator-container').hide();
 
-
     _renderGallery();
     gCanvas = document.getElementById('my-canvas');
     gCtx = gCanvas.getContext('2d');
@@ -19,11 +18,9 @@ function onInit() {
     gCanvas.addEventListener("touchmove", touchHandler, true);
     gCanvas.addEventListener("touchend", touchHandler, true);
     gCanvas.addEventListener("touchcancel", touchHandler, true);
-
-    gCanvas.width = 500 ;
-    gCanvas.height = 500 ;
-    resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
+
+    resizeCanvas();
 
     $('#my-canvas').mousedown((ev) => {
 
@@ -110,9 +107,18 @@ function onDownloadMeme(elLink) {
     elLink.download = 'my-meme';
 }
 
+function onShareMeme() {
+    $('#share-btn').click();
+}
+
 function activeNav(elNavItem) {
     $('.nav-item').removeClass('active-nav');
     elNavItem.classList.add('active-nav');
+}
+
+function openGallery() {
+    $('.gallery-container').show();
+    $('.generator-container').hide();
 }
 
 function clickTxtColor() {
@@ -125,7 +131,7 @@ function clickStrokeColor() {
 
 function resizeCanvas() {
     gCanvas.width = (window.innerWidth < 920)? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
-    gCanvas.height = gCanvas.width;
+    gCanvas.height = (gCanvas.width > 550) ? 500 : gCanvas.width;
 }
 
 function touchHandler(event) {

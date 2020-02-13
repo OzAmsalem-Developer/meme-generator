@@ -18,7 +18,7 @@
     <nav class="main-nav container flex align-center">
         <img class="logo" src="img/logo.png" alt="logo">
         <div class="nav-items">
-            <a onclick="activeNav(this)" class="nav-item">Gallery</a>
+            <a onclick="activeNav(this); openGallery();" class="nav-item">Gallery</a>
             <a onclick="activeNav(this)" class="nav-item" href="#">About</a>
         </div>
     </nav>
@@ -69,6 +69,11 @@
         <button onclick="clickTxtColor()" id="txt-color"><img src="img/icons/paint-board-and-brush.png" alt="txt-color-button"></button>
 
         <a class="download-link" onclick="onDownloadMeme(this)">Download</a>
+        <button onclick="onShareMeme()" class="fb-share-btn">Share</button>
+        <form id="share-form" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)" hidden>
+            <input name="img" id="imgData" type="hidden" />
+            <button id="share-btn" type="submit"></button>
+          </form>
 
     </section>
 </section>
@@ -78,6 +83,7 @@
 <div class="txt-size-calculator"></div>
 
     <script src="libs/jquery/jquery.js"></script>
+    <script src="js/upload-service.js"></script>
     <script src="js/utils-service.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/main.js"></script>

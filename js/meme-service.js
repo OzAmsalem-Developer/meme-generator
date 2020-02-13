@@ -106,7 +106,9 @@ function getHoveredLineIdx(x, y) {
 // Private Functions
 
 function _createImgs() {
-    let allImgsKeywords = [['happy', 'funny'], ['cute'], ['cute'], ['tired', 'cute']];
+    let allImgsKeywords = [['happy', 'funny'], ['cute'], ['cute'], ['tired', 'cute'],
+    ['funny'], ['amazing'], ['wired'], ['magic'], ['kids'], ['funny'], ['gays'],
+     ['point'], ['cheer'],['shock'], ['fantastic'], ['unbelivable'], ['putin, thuff'], ['anima']];
     return allImgsKeywords.map(keywords => _createImg(keywords));
 }
 

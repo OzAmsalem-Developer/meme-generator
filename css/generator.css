@@ -1,15 +1,7 @@
 .generator-container {
-    padding: 15px;
+    padding: 15px 15px 0 15px;
     justify-content: center;
     margin: auto;
-}
-
-.canvas-container {
-    width: auto;
-}
-
-#my-canvas {
-    border: solid 1px blue;
 }
 
 .generator-controls {
@@ -25,7 +17,7 @@
     ". . . . ."
     "increase decrease leftAlign centerAlign rightAlign"
     "font font font strokeColor txtColor" 
-    "download download . . .";
+    "download download share . .";
     height: 100%;
     max-width: 370px;
     margin: 0 auto;
@@ -37,14 +29,21 @@
 }
 
 .generator-controls button {
-    width: 3rem;
-    height: 3rem;
+    padding: 8px 10px;
     background-color: white;
     border-radius: 12px;
 }
 
 .generator-controls>* {
     width: 100%;
+}
+
+button.fb-share-btn {
+    padding: 4px;
+    border-radius: 12px;
+    background-color: #3b5998;
+    grid-area: share;
+    color: white;
 }
 
 /* Grid Areas */
@@ -112,6 +111,9 @@
     padding: 1rem;
     border-radius: 12px;
     background-color: #ff7f00;
+    width: auto;
+    height: auto;
+    color: black;
 }
 
 @media (max-width: 920px) {
@@ -127,6 +129,6 @@
         ". switch addLine removeLine ."
         "increase decrease leftAlign centerAlign rightAlign"
         "font font font strokeColor txtColor" 
-        "download download . . .";
+        "download download share . .";
     }
 }

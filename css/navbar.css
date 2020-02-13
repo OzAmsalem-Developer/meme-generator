@@ -1,10 +1,12 @@
 .main-header{
     background-color: #ff7f00;
+   
 }
 
 .main-nav {
     justify-content: space-between;
     margin: 0 auto;
+    min-height: 97px;
 }
 
 img.logo {
@@ -26,7 +28,7 @@ img.logo {
 
 @media (max-width: 920px) {
     img.logo {
-        height: 55px;
+        height: 100%;
         width: 50%;
     }
 }
