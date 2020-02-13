@@ -17,7 +17,7 @@ function onInit() {
 
     gCanvas.width = 500 ;
     gCanvas.height = 500 ;
-
+    resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
 
     $('#my-canvas').mousedown((ev) => {
