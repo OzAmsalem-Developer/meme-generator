@@ -34,7 +34,7 @@ function getMeme() {
     return gMeme;
 }
 
-function getLineInfo(prop) {
+function getSelectedLineInfo(prop) {
     return gMeme.lines[gMeme.selectedLineIdx][prop];
 }
 
@@ -58,8 +58,8 @@ function addLine(txt) {
         area: {
             xStart: null,
             yStart: null,
-            xEnd: null,
-            yEnd: null
+            width: null,
+            height: null
         }
     }
     gMeme.lines.push(newLine);
@@ -81,27 +81,26 @@ function setLinePos(posX, posY, lineIdx) {
 }
 
 function setLineArea(line) {
-    let xStart = line.x - 5;
-    let yStart = line.y - 5;
-
     let elCalculator = document.querySelector('.txt-size-calculator');
     elCalculator.innerText = line.txt;
     elCalculator.style.fontSize = line.size + 'px';
     elCalculator.style.fontFamily = line.fontFamily;
+
     let height = (+elCalculator.clientHeight);
     let width = (+elCalculator.clientWidth);
 
-
-    line.area.xStart = xStart;
-    line.area.xStart += (line.align === 'end')?  -width
-    : (line.align === 'center')? (-width / 2) : 0;
-    line.area.yStart = yStart;
-    line.area.width = width;
+    line.area.yStart =  line.y - height + 10 ; //Because the text goes from bottom to top
+    line.area.xStart = line.x - 5;
+    line.area.xStart += (line.align === 'end') ? -width
+        : (line.align === 'center') ? (-width / 2) : 0;
+    line.area.width = width + 10;
     line.area.height = height;
+}
 
-    // console.log( 'x',xStart, xEnd);
-    // console.log( 'y',yStart, yEnd);
-    
+function getHoveredLineIdx(x, y) {
+    let hoveredLineIdx = gMeme.lines.findIndex(line => (x >= line.area.xStart && x <= line.area.width + line.area.xStart
+        && y >= line.area.yStart && y <= line.y + 10 ))
+    return hoveredLineIdx;
 }
 
 // Private Functions
