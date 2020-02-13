@@ -20,6 +20,11 @@
     list-style-type: none;
 }
 
+a.active-nav {
+    border-bottom: 6px solid black;
+    color: #040a2c;
+}
+
 /* Darkness screen */
 
 .screen {

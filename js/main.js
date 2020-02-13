@@ -13,11 +13,15 @@ function onInit() {
 
     _renderGallery();
     gCanvas = document.getElementById('my-canvas');
-    gCanvas.width = $(window).width() / 2 - 20;
-    gCanvas.height = $(window).width() / 2 - 20;
     gCtx = gCanvas.getContext('2d');
 
+    gCanvas.width = 500 ;
+    gCanvas.height = 500 ;
+
+    window.addEventListener('resize', resizeCanvas, false);
+
     $('#my-canvas').mousedown((ev) => {
+
         let hoveredLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
         if (hoveredLineIdx >= 0) {
             gMouse.isDrag = true;
@@ -29,6 +33,7 @@ function onInit() {
         }
     });
     $('#my-canvas').mousemove((ev) => {
+
         let hoveredLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
         if (hoveredLineIdx >= 0) $('#my-canvas').css('cursor', 'move');
         else $('#my-canvas').css('cursor', 'default');
@@ -44,6 +49,7 @@ function onInit() {
 function onSelectImg(imgId) {
     $('.gallery-container').hide();
     $('.generator-container').show();
+    $('.nav-item').removeClass('active-nav');
     setMemeProp('selectedImgId', imgId)
     _drawMeme();
 }
@@ -61,9 +67,7 @@ function onSetTxtSize(op) {
 }
 
 function onAddLine() {
-    $('.add-line').hide();
-    let txt = $('.new-line-txt').val();
-    addLine(txt);
+    addLine('Edit This Text');
     _drawMeme();
     onSwitchLine();
     $('.new-line-txt').val('');
@@ -88,15 +92,35 @@ function onRemoveLine() {
     onSwitchLine();
 }
 
-function toggleAddLine() {
-    $('.add-line').toggle();
-}
-
 function onSwitchLine() {
     switchLine();
     let txt = getSelectedLineInfo('txt');
     $('.meme-txt').val(txt);
     _drawMeme();
+}
+
+function onDownloadMeme(elLink) {
+    const data = gCanvas.toDataURL();
+    elLink.href = data;
+    elLink.download = 'my-meme';
+}
+
+function activeNav(elNavItem) {
+    $('.nav-item').removeClass('active-nav');
+    elNavItem.classList.add('active-nav');
+}
+
+function clickTxtColor() {
+    $('.txt-color').click();
+}
+
+function clickStrokeColor() {
+    $('.stroke-color').click();
+}
+
+function resizeCanvas() {
+    gCanvas.width = (window.innerWidth < 920)? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
+    gCanvas.height = gCanvas.width;
 }
 
 // Private Functions

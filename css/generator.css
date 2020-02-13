@@ -1,9 +1,132 @@
 .generator-container {
     padding: 15px;
-    justify-content: space-between;
+    justify-content: center;
+    margin: auto;
 }
 
-.generator-container > * {
-    width: 50%;
+.canvas-container {
+    width: auto;
 }
 
+#my-canvas {
+    border: solid 1px blue;
+}
+
+.generator-controls {
+    margin-left: 20px;
+    align-self: flex-start;
+    justify-items: center;
+    grid-gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-areas: 
+    "meme meme meme meme meme" 
+    ". switch addLine removeLine ."
+    ". . . . ."
+    "increase decrease leftAlign centerAlign rightAlign"
+    "font font font strokeColor txtColor" 
+    "download download . . .";
+    height: 100%;
+    max-width: 370px;
+    margin: 0 auto;
+}
+
+.generator-controls img {
+    width: 2.1875rem;
+    height: 2.1875rem;
+}
+
+.generator-controls button {
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.generator-controls>* {
+    width: 100%;
+}
+
+/* Grid Areas */
+
+.meme-txt {
+    grid-area: meme;
+    border: 0;
+    border-radius: 12px;
+    padding-left: 20px;
+    font-family: Mont;
+    font-size: 18px;
+}
+
+.switch-btn {
+    grid-area: switch;
+}
+
+.add-line-btn {
+    grid-area: addLine;
+}
+
+.remove-line-btn {
+    grid-area: removeLine;
+}
+
+.align-right-btn {
+    grid-area: rightAlign;
+}
+
+.align-center-btn {
+    grid-area: centerAlign;
+}
+
+.align-left-btn {
+    grid-area: leftAlign;
+}
+
+.size-plus-btn {
+    grid-area: increase;
+}
+
+.size-minus-btn {
+    grid-area: decrease;
+}
+
+.select-font {
+    font-family: Mont;
+    grid-area: font;
+    border: 0;
+    border-radius: 12px;
+    padding-left: 20px;
+    font-size: 18px;
+}
+
+#stroke-color {
+    grid-area: strokeColor;
+}
+
+#txt-color {
+    grid-area: txtColor;
+}
+
+.download-link {
+    grid-area: download;
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #ff7f00;
+}
+
+@media (max-width: 920px) {
+    .generator-container {
+        flex-direction: column;
+    }
+    #my-canvas {
+        margin-bottom: 20px;
+    }
+    .generator-controls {
+        grid-template-areas: 
+        "meme meme meme meme meme" 
+        ". switch addLine removeLine ."
+        "increase decrease leftAlign centerAlign rightAlign"
+        "font font font strokeColor txtColor" 
+        "download download . . .";
+    }
+}
