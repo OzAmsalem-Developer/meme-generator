@@ -102,14 +102,21 @@ function onSwitchLine() {
     _drawMeme();
 }
 
+function onSaveMeme() {
+    _drawMeme(true);
+    saveMeme();
+    // add Active classes
+}
+
 function onDownloadMeme(elLink) {
-  //  _drawMeme(true); Make save btn
+    if(!getMeme().isSaved) return;
     const data = gCanvas.toDataURL();
     elLink.href = data;
     elLink.download = 'my-meme';
 }
 
 function onShareMeme() {
+    // if(!getMeme().isSaved) return;
     $('#share-btn').click();
 }
 

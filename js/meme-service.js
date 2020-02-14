@@ -1,14 +1,17 @@
 'use strict';
 
+const MEMES_KEY = 'savedMemes';
+var gSavedMemes = getFromStorage(MEMES_KEY);
 var gId = 0;
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 var gImgs = _createImgs();
 var gMeme = {
     selectedImgId: 1,
     selectedLineIdx: 0,
+    isSaved: false,
     lines: [
         {
-            txt: 'Type in your meme',
+            txt: 'Type your text',
             size: 40,
             align: 'center',
             fillColor: 'white',
@@ -101,6 +104,12 @@ function getHoveredLineIdx(x, y) {
     let hoveredLineIdx = gMeme.lines.findIndex(line => (x >= line.area.xStart && x <= line.area.width + line.area.xStart
         && y >= line.area.yStart && y <= line.y + 10 ))
     return hoveredLineIdx;
+}
+
+function saveMeme() {
+    gMeme.isSaved = true;
+    gSavedMemes.push(gMeme);
+    saveToStorage(MEMES_KEY, gSavedMemes);
 }
 
 // Private Functions

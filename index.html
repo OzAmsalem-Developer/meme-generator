@@ -68,6 +68,7 @@
         onchange="onSetMemeProp('fillColor', this.value, true)" hidden>
         <button onclick="clickTxtColor()" id="txt-color"><img src="img/icons/paint-board-and-brush.png" alt="txt-color-button"></button>
 
+        <button onclick="onSaveMeme()" class="save-btn">Save</button>
         <a class="download-link" onclick="onDownloadMeme(this)">Download</a>
         <button onclick="onShareMeme()" class="fb-share-btn">Share</button>
         <form id="share-form" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)" hidden>
