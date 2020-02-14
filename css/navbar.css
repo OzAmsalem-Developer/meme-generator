@@ -10,19 +10,21 @@
 }
 
 img.logo {
-    height: 100px;
-    width: auto;
+    height: 60px;
+    width: 200px;
     padding: 10px;
+    margin-left: 20px;
 }
 
 .nav-item {
-    padding: 32px 10px;
+    padding: 32px 0px;
     color: white;
     font-size: 19px;
+    margin-right: 20px;
 }
 
 .main-nav > * :last-child {
-    padding-right: 0;
+    padding: 32px 0;
 }
 
 .nav-item:hover {
@@ -30,9 +32,8 @@ img.logo {
     cursor: pointer;
 }
 
-@media (max-width: 920px) {
-    img.logo {
-        height: 100%;
-        width: 50%;
+@media (max-width: 1130px) {
+    .main-nav {
+        margin-right: 20px;
     }
 }

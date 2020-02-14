@@ -14,11 +14,12 @@ function onInit() {
     gCanvas = document.getElementById('my-canvas');
     gCtx = gCanvas.getContext('2d');
 
+    // Handle touch events
     gCanvas.addEventListener("touchstart", touchHandler, true);
     gCanvas.addEventListener("touchmove", touchHandler, true);
     gCanvas.addEventListener("touchend", touchHandler, true);
     gCanvas.addEventListener("touchcancel", touchHandler, true);
-    window.addEventListener('resize', resizeCanvas, false);
+    // window.addEventListener('resize', resizeCanvas, false);
 
     resizeCanvas();
 
@@ -42,7 +43,7 @@ function onInit() {
 
         if (gMouse.isDrag) {
             setLinePos(ev.offsetX, ev.offsetY, gMouse.draggingLine);
-            _drawMeme();    
+            _drawMeme();
         }
     });
     $('body').mouseup(() => gMouse.isDrag = false);
@@ -102,6 +103,7 @@ function onSwitchLine() {
 }
 
 function onDownloadMeme(elLink) {
+  //  _drawMeme(true); Make save btn
     const data = gCanvas.toDataURL();
     elLink.href = data;
     elLink.download = 'my-meme';
@@ -117,8 +119,8 @@ function activeNav(elNavItem) {
 }
 
 function openGallery() {
-    $('.gallery-container').show();
     $('.generator-container').hide();
+    $('.gallery-container').show();
 }
 
 function clickTxtColor() {
@@ -130,26 +132,27 @@ function clickStrokeColor() {
 }
 
 function resizeCanvas() {
-    gCanvas.width = (window.innerWidth < 920)? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
+    gCanvas.width = (window.innerWidth < 920) ? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
     gCanvas.height = (gCanvas.width > 550) ? 500 : gCanvas.width;
     _drawMeme()
 }
 
-function touchHandler(event) {
-    let touch = event.changedTouches[0];
+function touchHandler(ev) {
+    ev.preventDefault();
+    let touch = ev.changedTouches[0];
 
     let simulatedEvent = document.createEvent("MouseEvent");
-        simulatedEvent.initMouseEvent({
+    simulatedEvent.initMouseEvent({
         touchstart: "mousedown",
         touchmove: "mousemove",
         touchend: "mouseup"
-    }[event.type], true, true, window, 1,
+    }[ev.type], true, true, window, 1,
         touch.screenX, touch.screenY,
         touch.clientX, touch.clientY, false,
         false, false, false, 0, null);
 
     touch.target.dispatchEvent(simulatedEvent);
-    event.preventDefault();
+   
 }
 
 // Private Functions
@@ -169,7 +172,7 @@ function _drawMeme(isClean = false) {
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
         _drawTextLines(meme.lines);
-        if(!isClean) _drawTxtBorder(getSelectedLineInfo('area')); 
+        if (!isClean) _drawTxtBorder(getSelectedLineInfo('area'));
     }
 }
 
