@@ -25,7 +25,11 @@ a.active-nav {
     color: #040a2c;
 }
 
-.disabled  {
+a.active-nav:hover {
+    cursor: default;
+}
+
+.disabled {
     background-color: #cacaca !important;
     color: black !important;
 }
@@ -66,4 +70,5 @@ a.active-nav {
     height: auto;
     width: auto;
     white-space: nowrap;
+    top: -100%
 }

@@ -27,3 +27,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //max and min inclusive
   }
 
+  function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }

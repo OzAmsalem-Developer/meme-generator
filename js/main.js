@@ -23,7 +23,7 @@ function onInit() {
     $('.saved-memes').hide();
     _renderGallery();
     _renderSavedMemes();
-
+    _renderKeywords();
     // Event listeners
     $('#my-canvas').mousedown((ev) => {
         let hoveredLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
@@ -137,6 +137,15 @@ function onShareMeme() {
     $('#share-btn').click();
 }
 
+function onSearch(keyword) {
+    let imgsForDisplay = updateKeyword(keyword);
+    
+    if (imgsForDisplay) {
+        _renderKeywords();
+       _renderGallery(imgsForDisplay);
+    }
+}
+
 function activeNav(elNavItem) {
     $('.nav-item').removeClass('active-nav');
     elNavItem.classList.add('active-nav');
@@ -207,8 +216,7 @@ function touchHandler(ev) {
 
 // Private Functions
 
-function _renderGallery() {
-    let imgs = getImgs();
+function _renderGallery(imgs = getImgs()) {
     let strHtmls = imgs.map(img => {
         return `<img onclick="onSelectImg(${img.id})" src="${img.url}" alt="${'Image' + img.id}"></img>`
     }).join('');
@@ -222,7 +230,8 @@ function _drawMeme(isClean = false) {
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
         _drawTextLines(meme.lines);
-        if (!isClean) _drawTxtBorder(getSelectedLineInfo('area'));
+        if (!isClean && getSelectedLineInfo('txt').length !== 0) 
+        _drawTxtBorder(getSelectedLineInfo('area'));
     }
 }
 
@@ -281,6 +290,20 @@ function _renderSavedMemes() {
         }).join('');
         $('.memes-container').html(strHtmls);
     }
+}
+
+function _renderKeywords() {
+    let keywords = getKeysForDisplay();
+    let strHtmls = keywords.map((keyword) => {
+        let fontSize = 20 + keyword.searches;
+        if (fontSize > 50) fontSize = 50;
+        console.log(window.innerWidth);
+        
+        if (+window.innerWidth <= 920) fontSize -= 10;
+        
+        return `<span onclick="onSearch('${keyword.key}')" style="font-size:${fontSize}px">${keyword.key}</span>`
+    }).join('');
+    $('.keywords-container').html(strHtmls);
 }
 
 function _memeUnsaved() {

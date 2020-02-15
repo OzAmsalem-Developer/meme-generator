@@ -56,7 +56,6 @@ button.save-btn {
 
 .meme-txt {
     grid-area: meme;
-    border: 0;
     border-radius: 12px;
     padding-left: 20px;
     font-family: Mont;
