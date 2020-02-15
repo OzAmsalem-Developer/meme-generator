@@ -108,7 +108,7 @@ function setMeme(memeId) {
 }
 
 function updateKeyword(keyword) {
-    if (!gKeywords[keyword]) return null;
+    if (!gKeywords[keyword]) return gImgs;
     gKeywords[keyword]++;
     saveToStorage(WORDS_KEY, gKeywords);
     return _getImgsByKeyword(keyword);

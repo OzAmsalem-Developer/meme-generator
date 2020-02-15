@@ -149,6 +149,7 @@ function onSearch(keyword) {
 function activeNav(elNavItem) {
     $('.nav-item').removeClass('active-nav');
     elNavItem.classList.add('active-nav');
+    if ($('body').hasClass('menu-open')) closeNav();
 }
 
 function openGallery() {
@@ -297,8 +298,6 @@ function _renderKeywords() {
     let strHtmls = keywords.map((keyword) => {
         let fontSize = 20 + keyword.searches;
         if (fontSize > 50) fontSize = 50;
-        console.log(window.innerWidth);
-        
         if (+window.innerWidth <= 920) fontSize -= 10;
         
         return `<span onclick="onSearch('${keyword.key}')" style="font-size:${fontSize}px">${keyword.key}</span>`
