@@ -5,9 +5,6 @@
 }
 
 .generator-controls {
-    margin-left: 20px;
-    align-self: flex-start;
-    justify-items: center;
     grid-gap: 20px;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
@@ -17,9 +14,7 @@
     ". . . . ."
     "increase decrease leftAlign centerAlign rightAlign"
     "font font font strokeColor txtColor" 
-    "download download share . .";
-    height: 100%;
-    max-width: 370px;
+    "save . download . share";
     margin: 0 auto;
 }
 
@@ -31,7 +26,10 @@
 .generator-controls button {
     padding: 8px 10px;
     background-color: white;
-    border-radius: 12px;
+}
+
+.generator-controls a:hover {
+    opacity: 0.6;
 }
 
 .generator-controls>* {
@@ -39,14 +37,22 @@
 }
 
 button.fb-share-btn {
-    padding: 4px;
-    border-radius: 12px;
-    background-color: #3b5998;
+    background-color: #7592ce;;
     grid-area: share;
     color: white;
 }
 
-/* Grid Areas */
+button.save-btn {
+    grid-area: save;
+    background-color: #ff7f00;
+}
+
+.download-link {
+    padding: 10px;
+    border-radius: 12px;
+    background-color: #ff7f00;
+    color: black;
+}
 
 .meme-txt {
     grid-area: meme;
@@ -55,6 +61,12 @@ button.fb-share-btn {
     padding-left: 20px;
     font-family: Mont;
     font-size: 18px;
+}
+
+/* Grid Areas */
+
+.generator-controls .download-link {
+    grid-area: download;
 }
 
 .switch-btn {
@@ -106,15 +118,7 @@ button.fb-share-btn {
     grid-area: txtColor;
 }
 
-.download-link {
-    grid-area: download;
-    padding: 1rem;
-    border-radius: 12px;
-    background-color: #ff7f00;
-    width: auto;
-    height: auto;
-    color: black;
-}
+
 
 @media (max-width: 920px) {
     .generator-container {
@@ -124,11 +128,12 @@ button.fb-share-btn {
         margin-bottom: 20px;
     }
     .generator-controls {
+        max-width: unset;
         grid-template-areas: 
         "meme meme meme meme meme" 
         ". switch addLine removeLine ."
         "increase decrease leftAlign centerAlign rightAlign"
         "font font font strokeColor txtColor" 
-        "download download share . .";
+        "save . download . share";
     }
 }

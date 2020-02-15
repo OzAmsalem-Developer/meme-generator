@@ -1,33 +1,12 @@
 'use strict';
+// Modal: Saved! now you can download, share and watch your meme later on at 'Memes' tab
 
 const MEMES_KEY = 'savedMemes';
-var gSavedMemes = getFromStorage(MEMES_KEY);
+var gSavedMemes = getFromStorage(MEMES_KEY) || [];
 var gId = 0;
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 var gImgs = _createImgs();
-var gMeme = {
-    selectedImgId: 1,
-    selectedLineIdx: 0,
-    isSaved: false,
-    lines: [
-        {
-            txt: 'Type your text',
-            size: 40,
-            align: 'center',
-            fillColor: 'white',
-            strokeColor: 'black',
-            fontFamily: 'Impact',
-            x: null,
-            y: null,
-            area: {
-                xStart: 266,
-                yStart: 55,
-                width: 399,
-                height: 84
-            }
-        }
-    ]
-};
+var gMeme = _setInitialMeme();
 
 function getImgs() {
     return gImgs;
@@ -42,6 +21,8 @@ function getSelectedLineInfo(prop) {
 }
 
 function setMemeProp(prop, val, isInLines = false) {
+   if (prop !== 'dataUrl') gMeme.isSaved = false;
+   if (prop === 'id') gMeme = _setInitialMeme();
     if (isInLines) {
         let lineIdx = gMeme.selectedLineIdx;
         gMeme.lines[lineIdx][prop] = val;
@@ -66,6 +47,7 @@ function addLine(txt) {
         }
     }
     gMeme.lines.push(newLine);
+    gMeme.isSaved = false;
 }
 
 function switchLine() {
@@ -75,12 +57,15 @@ function switchLine() {
 }
 
 function removaLine() {
+    gMeme.isSaved = false;
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
 }
 
 function setLinePos(posX, posY, lineIdx) {
+    gMeme.isSaved = false;
     gMeme.lines[lineIdx].x = posX;
     gMeme.lines[lineIdx].y = posY;
+
 }
 
 function setLineArea(line) {
@@ -106,10 +91,20 @@ function getHoveredLineIdx(x, y) {
     return hoveredLineIdx;
 }
 
+function getSavedMemes() {
+    return gSavedMemes;
+}
+
 function saveMeme() {
-    gMeme.isSaved = true;
-    gSavedMemes.push(gMeme);
+    let memeIdx = gSavedMemes.findIndex(meme => meme.id === gMeme.id);
+    if (memeIdx >= 0) gSavedMemes[memeIdx] = gMeme;
+    else gSavedMemes.push(gMeme);
     saveToStorage(MEMES_KEY, gSavedMemes);
+    setTimeout(() => {gMeme.isSaved = true;}, 50);
+}
+
+function setMeme(memeId) {
+    gMeme = gSavedMemes.find(meme => meme.id === memeId);
 }
 
 // Private Functions
@@ -127,5 +122,33 @@ function _createImg(keywords) {
         id: gId,
         url: 'img/gallery-squares/' + gId + '.jpg',
         keywords: keywords.join()
+    }
+}
+
+function _setInitialMeme() {
+    return {
+        id: null,
+    selectedImgId: 1,
+    selectedLineIdx: 0,
+    isSaved: false,
+    dataUrl: null,
+    lines: [
+        {
+            txt: 'Type your text',
+            size: 40,
+            align: 'center',
+            fillColor: 'white',
+            strokeColor: 'black',
+            fontFamily: 'Impact',
+            x: null,
+            y: null,
+            area: {
+                xStart: 266,
+                yStart: 55,
+                width: 399,
+                height: 84
+            }
+        }
+    ]
     }
 }

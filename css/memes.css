@@ -1,0 +1,57 @@
+.saved-memes {
+    background-color: #e3e3e3;
+}
+
+.memes-container {
+    grid-template-columns: repeat(auto-fill,minmax(48%, 1fr ));
+    /* grid-template-rows: repeat(auto-fill,50%); */
+    margin: 0 auto;
+    grid-gap: 35px;
+    padding-top: 15px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.card img {
+    object-fit: cover;
+    height: 90%;
+    width: 100%;
+}
+
+.download-meme img:hover {
+    opacity: 0.6;
+}
+
+.download-meme img {
+    height: 45px;
+    width: 45px;
+    padding: 5px;
+    border: 2px solid black;
+}
+
+.edit-btn {
+    margin: 5px 12px 0 0;
+}
+
+.edit-btn img {
+    height: 45px;
+    width: 45px;
+}
+
+@media (max-width: 1200px) {
+    .memes-container {
+      margin:0 40px;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .memes-container {
+        grid-template-columns: repeat(auto-fill,100%);
+        grid-template-rows: unset;
+    }
+  }

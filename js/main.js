@@ -19,7 +19,6 @@ function onInit() {
     gCanvas.addEventListener("touchmove", touchHandler, true);
     gCanvas.addEventListener("touchend", touchHandler, true);
     gCanvas.addEventListener("touchcancel", touchHandler, true);
-    // window.addEventListener('resize', resizeCanvas, false);
 
     resizeCanvas();
 
@@ -42,6 +41,7 @@ function onInit() {
         else $('#my-canvas').css('cursor', 'default');
 
         if (gMouse.isDrag) {
+            _memeUnsaved();
             setLinePos(ev.offsetX, ev.offsetY, gMouse.draggingLine);
             _drawMeme();
         }
@@ -50,23 +50,28 @@ function onInit() {
 }
 
 function onSelectImg(imgId) {
-    $('.gallery-container').hide();
-    $('.generator-container').show();
-    $('.nav-item').removeClass('active-nav');
-    setMemeProp('selectedImgId', imgId)
-    _drawMeme();
+    _openGenerator();
+    setMemeProp('id', makeId());
+    onSetMemeProp('selectedImgId', imgId);
 }
 
-function onSetMemeProp(prop, val, isLineProp) {
+function onEditMeme(memeId) {
+    setMeme(memeId);
+    _openGenerator();
+    _drawMeme();
+
+}
+
+function onSetMemeProp(prop, val, isLineProp = false) {
     setMemeProp(prop, val, isLineProp);
+    _memeUnsaved();
     _drawMeme();
 }
 
 function onSetTxtSize(op) {
     let currSize = getSelectedLineInfo('size');
     let newSize = (op === '+') ? ++currSize : --currSize;
-    setMemeProp('size', newSize, true);
-    _drawMeme();
+    onSetMemeProp('size', newSize, true);
 }
 
 function onAddLine() {
@@ -74,49 +79,56 @@ function onAddLine() {
     _drawMeme();
     onSwitchLine();
     $('.new-line-txt').val('');
-}
-
-function onSelectLine(ev) {
-    ev.stopPropagation();
-    let selectedLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
-    if (selectedLineIdx >= 0) {
-        setMemeProp('selectedLineIdx', selectedLineIdx);
-        let txt = getSelectedLineInfo('txt');
-        $('.meme-txt').val(txt);
-        _drawMeme();
-    } else {
-        _drawMeme(true)
-    }
+    _memeUnsaved();
 }
 
 function onRemoveLine() {
     removaLine();
     _drawMeme();
     onSwitchLine();
+    _memeUnsaved();
 }
 
-function onSwitchLine() {
-    switchLine();
+function onSwitchLine(ev) {
+    // If the switch is from click on canvas
+    if (ev) {
+        let selectedLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
+        if (selectedLineIdx >= 0) setMemeProp('selectedLineIdx', selectedLineIdx);
+        else {
+            //Click on canvas but not on line? remove mark.
+            _drawMeme(true);
+            return;
+        }
+    } else switchLine();
+
     let txt = getSelectedLineInfo('txt');
-    $('.meme-txt').val(txt);
+    if (txt === 'Type your text' || txt === 'Edit This Text') {
+        $('.meme-txt').attr('placeholder', txt);
+        $('.meme-txt').val('')
+    } else $('.meme-txt').val(txt);
     _drawMeme();
 }
 
 function onSaveMeme() {
     _drawMeme(true);
-    saveMeme();
-    // add Active classes
+    setTimeout(() => {
+        $('.save-btn').addClass('disabled');
+        $('.fb-share-btn').removeClass('disabled');
+        $('.download-link').removeClass('disabled');
+        setMemeProp('dataUrl', gCanvas.toDataURL("image/jpeg"));
+        saveMeme();
+    }, 50);
 }
 
-function onDownloadMeme(elLink) {
-    if(!getMeme().isSaved) return;
-    const data = gCanvas.toDataURL();
+function onDownloadMeme(elLink, meme = null) {
+    if (!getMeme().isSaved) return;
+    const data = (meme) ? JSON.parse(meme).dataUrl : gCanvas.toDataURL();
     elLink.href = data;
     elLink.download = 'my-meme';
 }
 
 function onShareMeme() {
-    // if(!getMeme().isSaved) return;
+    if (!getMeme().isSaved) return;
     $('#share-btn').click();
 }
 
@@ -127,7 +139,36 @@ function activeNav(elNavItem) {
 
 function openGallery() {
     $('.generator-container').hide();
+    $('.saved-memes').hide();
     $('.gallery-container').show();
+}
+
+function renderSavedMemes() {
+    $('.generator-container').hide();
+    $('.gallery-container').hide();
+    let savedMemes = getSavedMemes();
+    if (!savedMemes || savedMemes.length === 0) {
+        $('.saved-memes-msg').text('There is no saved Memes yet..')
+    } else {
+        let strHtmls = savedMemes.map(meme => {
+            return `
+            <div class="card">
+            <img class="meme-img" src="${meme.dataUrl}" alt="meme-image">
+            <button class="edit-btn" onclick="onEditMeme('${meme.id}')">
+            <img src="img/icons/edit.png" alt="edit-button"></button>
+            <a class="download-meme" onclick="onDownloadSavedMeme('${meme.dataUrl}', this)">
+            <img src="img/icons/download.png" alt="download-button"></a>
+        </div>
+            `
+        }).join('');
+        $('.memes-container').html(strHtmls);
+    }
+    $('.saved-memes').show();
+}
+
+function onDownloadSavedMeme(data, elBtn) {
+    elBtn.href = data;
+    elBtn.download = 'my-meme';
 }
 
 function clickTxtColor() {
@@ -141,13 +182,12 @@ function clickStrokeColor() {
 function resizeCanvas() {
     gCanvas.width = (window.innerWidth < 920) ? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
     gCanvas.height = (gCanvas.width > 550) ? 500 : gCanvas.width;
-    _drawMeme()
+    _drawMeme();
 }
 
 function touchHandler(ev) {
     ev.preventDefault();
     let touch = ev.changedTouches[0];
-
     let simulatedEvent = document.createEvent("MouseEvent");
     simulatedEvent.initMouseEvent({
         touchstart: "mousedown",
@@ -159,7 +199,6 @@ function touchHandler(ev) {
         false, false, false, 0, null);
 
     touch.target.dispatchEvent(simulatedEvent);
-   
 }
 
 // Private Functions
@@ -218,4 +257,17 @@ function _drawTxtBorder(lineArea) {
     gCtx.strokeStyle = 'black';
     gCtx.stroke();
     gCtx.closePath();
+}
+
+function _memeUnsaved() {
+    $('.fb-share-btn').addClass('disabled');
+    $('.download-link').addClass('disabled');
+    $('.save-btn').removeClass('disabled');
+}
+
+function _openGenerator() {
+    $('.gallery-container').hide();
+    $('.saved-memes').hide();
+    $('.generator-container').show();
+    $('.nav-item').removeClass('active-nav');
 }

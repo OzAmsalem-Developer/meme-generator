@@ -25,6 +25,16 @@ a.active-nav {
     color: #040a2c;
 }
 
+.disabled  {
+    background-color: #cacaca !important;
+    color: black !important;
+}
+
+.disabled:hover {
+    opacity: 1 !important;
+    cursor: default !important;
+}
+
 /* Darkness screen */
 
 .screen {

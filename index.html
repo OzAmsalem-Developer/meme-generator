@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/gallery.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/generator.css">
+    <link rel="stylesheet" href="css/memes.css">
     <title>Meme Generator</title>
 </head>
 <body onload="onInit()">
@@ -19,7 +20,8 @@
         <img class="logo" src="img/logo.png" alt="logo">
         <div class="nav-items">
             <a onclick="activeNav(this); openGallery();" class="nav-item">Gallery</a>
-            <a onclick="activeNav(this)" class="nav-item" href="#">About</a>
+            <a onclick="activeNav(this); renderSavedMemes();" class="nav-item">Memes</a>
+            <a onclick="activeNav(this);" class="nav-item" href="#">About</a>
         </div>
     </nav>
 </header>
@@ -27,7 +29,7 @@
 
 
     
-<section class="gallery-container ">
+<section class="gallery-container">
     <section class="imgs-container grid container"></section>
 </section>
 
@@ -36,7 +38,7 @@
 <section class="generator-container flex container align-center">
 
     <div class="canvas-container">
-        <canvas id="my-canvas"  style="border: 1px solid black;" onclick="onSelectLine(event)">
+        <canvas id="my-canvas"  style="border: 1px solid black;" onclick="onSwitchLine(event)">
     </canvas>
     </div>
 
@@ -68,15 +70,19 @@
         onchange="onSetMemeProp('fillColor', this.value, true)" hidden>
         <button onclick="clickTxtColor()" id="txt-color"><img src="img/icons/paint-board-and-brush.png" alt="txt-color-button"></button>
 
-        <button onclick="onSaveMeme()" class="save-btn">Save</button>
-        <a class="download-link" onclick="onDownloadMeme(this)">Download</a>
-        <button onclick="onShareMeme()" class="fb-share-btn">Share</button>
+        <button onclick="onSaveMeme()" class="save-btn"><img src="img/icons/save.png" alt=""></button>
+        <a class="download-link" onclick="onDownloadMeme(this)"><img src="img/icons/download.png" alt="download-button"></a>
+        <button onclick="onShareMeme()" class="fb-share-btn"><img src="img/icons/facebook-logo.png" alt="share-to-fb"></button>
         <form id="share-form" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)" hidden>
             <input name="img" id="imgData" type="hidden" />
             <button id="share-btn" type="submit"></button>
           </form>
 
     </section>
+</section>
+
+<section class="saved-memes">
+    <div class="memes-container grid container"></div>
 </section>
 
 <footer></footer>
