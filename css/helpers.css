@@ -53,6 +53,11 @@ a.active-nav {
     visibility: hidden;
 }
 
+.menu-open .screen {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Text size calculator */
 
 .txt-size-calculator {

@@ -4,7 +4,6 @@
 
 .memes-container {
     grid-template-columns: repeat(auto-fill,minmax(48%, 1fr ));
-    /* grid-template-rows: repeat(auto-fill,50%); */
     margin: 0 auto;
     grid-gap: 35px;
     padding-top: 15px;

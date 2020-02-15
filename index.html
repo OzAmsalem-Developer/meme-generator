@@ -14,14 +14,20 @@
     <title>Meme Generator</title>
 </head>
 <body onload="onInit()">
+    <div class="screen" onclick="closeNav()"></div>
 
 <header class="main-header">
     <nav class="main-nav container flex align-center">
         <img class="logo" src="img/logo.png" alt="logo">
-        <div class="nav-items">
+        <div class="nav-items flex justify-center">
             <a onclick="activeNav(this); openGallery();" class="nav-item">Gallery</a>
-            <a onclick="activeNav(this); renderSavedMemes();" class="nav-item">Memes</a>
+            <a onclick="activeNav(this); openSavedMemes();" class="nav-item">Memes</a>
             <a onclick="activeNav(this);" class="nav-item" href="#">About</a>
+        </div>
+        <div class="btn-container" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
         </div>
     </nav>
 </header>

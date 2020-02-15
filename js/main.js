@@ -1,5 +1,5 @@
 'use strict';
-
+// Add the | icon in the navbar
 var gCanvas;
 var gCtx;
 var gMouse = {
@@ -8,9 +8,6 @@ var gMouse = {
 }
 
 function onInit() {
-    $('.generator-container').hide();
-
-    _renderGallery();
     gCanvas = document.getElementById('my-canvas');
     gCtx = gCanvas.getContext('2d');
 
@@ -22,8 +19,13 @@ function onInit() {
 
     resizeCanvas();
 
-    $('#my-canvas').mousedown((ev) => {
+    $('.generator-container').hide();
+    $('.saved-memes').hide();
+    _renderGallery();
+    _renderSavedMemes();
 
+    // Event listeners
+    $('#my-canvas').mousedown((ev) => {
         let hoveredLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
         if (hoveredLineIdx >= 0) {
             gMouse.isDrag = true;
@@ -34,8 +36,8 @@ function onInit() {
             }
         }
     });
-    $('#my-canvas').mousemove((ev) => {
 
+    $('#my-canvas').mousemove((ev) => {
         let hoveredLineIdx = getHoveredLineIdx(ev.offsetX, ev.offsetY);
         if (hoveredLineIdx >= 0) $('#my-canvas').css('cursor', 'move');
         else $('#my-canvas').css('cursor', 'default');
@@ -46,6 +48,7 @@ function onInit() {
             _drawMeme();
         }
     });
+
     $('body').mouseup(() => gMouse.isDrag = false);
 }
 
@@ -99,6 +102,7 @@ function onSwitchLine(ev) {
             _drawMeme(true);
             return;
         }
+        // The click is from the 'switch' btn
     } else switchLine();
 
     let txt = getSelectedLineInfo('txt');
@@ -117,6 +121,7 @@ function onSaveMeme() {
         $('.download-link').removeClass('disabled');
         setMemeProp('dataUrl', gCanvas.toDataURL("image/jpeg"));
         saveMeme();
+        _renderSavedMemes();
     }, 50);
 }
 
@@ -143,29 +148,6 @@ function openGallery() {
     $('.gallery-container').show();
 }
 
-function renderSavedMemes() {
-    $('.generator-container').hide();
-    $('.gallery-container').hide();
-    let savedMemes = getSavedMemes();
-    if (!savedMemes || savedMemes.length === 0) {
-        $('.saved-memes-msg').text('There is no saved Memes yet..')
-    } else {
-        let strHtmls = savedMemes.map(meme => {
-            return `
-            <div class="card">
-            <img class="meme-img" src="${meme.dataUrl}" alt="meme-image">
-            <button class="edit-btn" onclick="onEditMeme('${meme.id}')">
-            <img src="img/icons/edit.png" alt="edit-button"></button>
-            <a class="download-meme" onclick="onDownloadSavedMeme('${meme.dataUrl}', this)">
-            <img src="img/icons/download.png" alt="download-button"></a>
-        </div>
-            `
-        }).join('');
-        $('.memes-container').html(strHtmls);
-    }
-    $('.saved-memes').show();
-}
-
 function onDownloadSavedMeme(data, elBtn) {
     elBtn.href = data;
     elBtn.download = 'my-meme';
@@ -183,6 +165,28 @@ function resizeCanvas() {
     gCanvas.width = (window.innerWidth < 920) ? window.innerWidth - 100 : (window.innerWidth / 2) - 100;
     gCanvas.height = (gCanvas.width > 550) ? 500 : gCanvas.width;
     _drawMeme();
+}
+
+function openSavedMemes() {
+    $('.generator-container').hide();
+    $('.gallery-container').hide();
+    $('.saved-memes').show();
+}
+
+function toggleMenu() {
+    $('body').toggleClass('menu-open');
+    $('.btn-container').toggleClass('change');
+   
+    setTimeout(() => {
+        if ($('.btn-container').hasClass('change'))  $('.nav-items').css('top', 0);
+       else  $('.nav-items').css('top', '-100%');
+    }, 0);
+}
+
+function closeNav() {
+    $('.nav-items').css('top', '-100%');
+    $('body').removeClass('menu-open');
+    $('.btn-container').removeClass('change');
 }
 
 function touchHandler(ev) {
@@ -257,6 +261,26 @@ function _drawTxtBorder(lineArea) {
     gCtx.strokeStyle = 'black';
     gCtx.stroke();
     gCtx.closePath();
+}
+
+function _renderSavedMemes() {
+    let savedMemes = getSavedMemes();
+    if (!savedMemes || savedMemes.length === 0) {
+        $('.saved-memes-msg').text('There is no saved Memes yet..')
+    } else {
+        let strHtmls = savedMemes.map(meme => {
+            return `
+            <div class="card">
+            <img class="meme-img" src="${meme.dataUrl}" alt="meme-image">
+            <button class="edit-btn" onclick="onEditMeme('${meme.id}')">
+            <img src="img/icons/edit.png" alt="edit-button"></button>
+            <a class="download-meme" onclick="onDownloadSavedMeme('${meme.dataUrl}', this)">
+            <img src="img/icons/download.png" alt="download-button"></a>
+        </div>
+            `
+        }).join('');
+        $('.memes-container').html(strHtmls);
+    }
 }
 
 function _memeUnsaved() {
