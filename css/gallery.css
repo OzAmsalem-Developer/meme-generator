@@ -6,7 +6,7 @@
     grid-template-columns: repeat(auto-fill, minmax(33%, max-content));
     margin: 0 auto;
     grid-gap: 15px;
-   padding-top: 15px;
+   padding: 20px 0;
 }
 
 .imgs-container img {

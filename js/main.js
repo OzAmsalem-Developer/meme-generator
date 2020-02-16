@@ -276,8 +276,9 @@ function _drawTxtBorder(lineArea) {
 function _renderSavedMemes() {
     let savedMemes = getSavedMemes();
     if (!savedMemes || savedMemes.length === 0) {
-        $('.saved-memes-msg').text('There is no saved Memes yet..')
+        $('.saved-memes-msg').show();
     } else {
+        $('.saved-memes-msg').hide();
         let strHtmls = savedMemes.map(meme => {
             return `
             <div class="card">
@@ -294,7 +295,7 @@ function _renderSavedMemes() {
 }
 
 function _renderKeywords() {
-    let keywords = getKeysForDisplay();
+    let keywords =  getBestKeysForDisplay();
     let strHtmls = keywords.map((keyword) => {
         let fontSize = 20 + keyword.searches;
         if (fontSize > 50) fontSize = 50;

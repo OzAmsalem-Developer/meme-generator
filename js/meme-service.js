@@ -7,6 +7,7 @@ var gId = 0;
 var gImgs = _createImgs();
 var gMeme = _setInitialMeme();
 var gKeywords = getFromStorage(WORDS_KEY) || _setInitialKeywords();
+var gBestKeywords = _getBestKeywords();
 
 function getImgs() {
     return gImgs;
@@ -110,32 +111,27 @@ function setMeme(memeId) {
 function updateKeyword(keyword) {
     if (!gKeywords[keyword]) return gImgs;
     gKeywords[keyword]++;
+    let bestKeywordIdx = gBestKeywords.findIndex(bestKey => bestKey.key === keyword);
+    if (bestKeywordIdx >= 0) gBestKeywords[bestKeywordIdx].searches++;
     saveToStorage(WORDS_KEY, gKeywords);
     return _getImgsByKeyword(keyword);
 }
 
-function getKeysForDisplay() {
-    let keywords = [];
-    let keysMapCopy = { ...gKeywords, newProp: 0 };
-    while (keywords.length < 5) {
-        let maxKeyVal = Math.max(...Object.values(keysMapCopy));
-        let maxKey = Object.keys(keysMapCopy).find(key => keysMapCopy[key] === maxKeyVal);
-        keysMapCopy[maxKey] = 0;
-        keywords.push({key: maxKey, searches: maxKeyVal});
-    }
-    shuffle(keywords);
-    return keywords;
+function getBestKeysForDisplay() {
+    return gBestKeywords;
 }
+
+
 
 // Private Functions
 
 function _createImgs() {
     let allImgsKeywords = [['happy', 'funny'], ['cute'], ['cute'], ['tired', 'cute'],
-    ['funny'], ['amazing'], ['wired'], ['magic'], ['kids'], ['funny'], ['gays'],
-    ['point'], ['cheer'], ['shock'], ['fantastic'], ['unbelivable'], ['putin', 'thuff'], ['anima']];
+    ['funny'], ['amazing'], ['wired'], ['magic'], ['kids'], ['funny'], ['happy'],
+    ['point'], ['cheer'], ['shock'], ['fantastic'], ['unbelivable'], ['putin', 'tough'], ['comix']];
     return allImgsKeywords.map(keywords => _createImg(keywords));
 }
-    
+
 function _createImg(keywords) {
     gId++;
     return {
@@ -184,6 +180,19 @@ function _setInitialKeywords() {
     }, {});
     saveToStorage(WORDS_KEY, initialKeywordsMap);
     return initialKeywordsMap;
+}
+
+function _getBestKeywords() {
+    let keywords = [];
+    let keysMapCopy = { ...gKeywords, newProp: 0 };
+    while (keywords.length < 5) {
+        let maxKeyVal = Math.max(...Object.values(keysMapCopy));
+        let maxKey = Object.keys(keysMapCopy).find(key => keysMapCopy[key] === maxKeyVal);
+        keysMapCopy[maxKey] = 0;
+        keywords.push({ key: maxKey, searches: maxKeyVal });
+    }
+    shuffle(keywords);
+    return keywords;
 }
 
 function _getImgsByKeyword(keyword) {
