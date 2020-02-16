@@ -7,6 +7,7 @@
 .search-container {
     justify-content: space-between;
     align-items: center;
+    margin: auto;
 }
 
 .keywords-container {
@@ -37,6 +38,7 @@
     background-position: center right;
     position: relative;
     letter-spacing: 0.04375rem;
+    margin-right: 60px;
 }
 
 @media (max-width: 1020px) {
