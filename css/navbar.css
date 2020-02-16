@@ -34,10 +34,6 @@ img.logo {
     right: -15px;
 }
 
-.nav-item:last-child {
-    margin-right:0;
-}
-
 .nav-item:hover {
     color: #040a2c;
     cursor: pointer;

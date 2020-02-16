@@ -1,0 +1,52 @@
+.about {
+    height: 560px;
+    background-color: white;
+    padding: 0 40px;
+}
+
+.about-img {
+    border-radius: 100%;
+    height: 300px;
+    width: 300px;
+    margin-right: 40px;
+}
+
+.about a {
+    margin: 2px;
+}
+
+.about a img {
+    width: 39px;
+    height: 39px;
+    border: 1px solid transparent;
+}
+
+.about a img:hover {
+    width: 39px;
+    height: 39px;
+    border: 1px solid #ff7f00;
+}
+
+.about h4 {
+    font-family: Mont-bold, sans-serif;
+}
+
+.about p {
+    color: #000000;
+    font-size: 20px;
+    max-width: 600px;
+}
+
+@media (max-width: 920px) {
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+    .about-img {
+        height: 200px;
+        width: 200px;
+    }
+    .about-img {
+        margin-bottom: 25px;
+    }
+}

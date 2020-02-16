@@ -4,6 +4,7 @@ const MEMES_KEY = 'savedMemes';
 const WORDS_KEY = 'searchWords';
 var gSavedMemes = getFromStorage(MEMES_KEY) || [];
 var gId = 0;
+var gStickersId = 0;
 var gImgs = _createImgs();
 var gMeme = _setInitialMeme();
 var gKeywords = getFromStorage(WORDS_KEY) || _setInitialKeywords();
@@ -11,6 +12,10 @@ var gBestKeywords = _getBestKeywords();
 
 function getImgs() {
     return gImgs;
+}
+
+function getImgById(id) {
+    return gImgs.find(img => img.id === id);
 }
 
 function getMeme() {
@@ -32,14 +37,15 @@ function setMemeProp(prop, val, isInLines = false) {
     }
 }
 
-function addLine(txt) {
+function addLine(txt, isEmoji) {
     let newLine = {
         txt: txt,
-        size: 40,
+        size: (isEmoji) ? 90 : 40,
         align: 'center',
-        fillColor: 'white',
-        strokeColor: 'black',
+        fillColor: (isEmoji) ? 'none' : 'white',
+        strokeColor: (isEmoji) ? 'none' : 'black',
         fontFamily: 'Impact',
+        isEmoji: isEmoji,
         area: {
             xStart: null,
             yStart: null,
@@ -121,7 +127,16 @@ function getBestKeysForDisplay() {
     return gBestKeywords;
 }
 
-
+function saveUploadedImg(img) {
+    gId++;
+    gImgs.push({
+        id: gId,
+        isUploaded: true,
+        img: img
+    });
+    _setInitialMeme();
+    setMemeProp('selectedImgId', gId);
+}
 
 // Private Functions
 
@@ -198,4 +213,3 @@ function _getBestKeywords() {
 function _getImgsByKeyword(keyword) {
     return gImgs.filter(img => img.keywords.includes(keyword));
 }
-

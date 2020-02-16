@@ -1,11 +1,11 @@
 .generator-container {
-    padding: 15px 15px 0 15px;
+    padding: 15px 15px 20px 15px;
     justify-content: center;
     margin: auto;
 }
 
 .generator-controls {
-    grid-gap: 20px;
+    grid-gap: 10px;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-template-areas: 
@@ -14,7 +14,7 @@
     ". . . . ."
     "increase decrease leftAlign centerAlign rightAlign"
     "font font font strokeColor txtColor" 
-    "save . download . share";
+    "save download share upload emoji";
     margin: 0 auto;
 }
 
@@ -23,13 +23,14 @@
     height: 2.1875rem;
 }
 
-.generator-controls button {
+.generator-controls button, .generator-controls a {
     padding: 8px 10px;
     background-color: white;
+    border: 1px solid transparent;
 }
 
-.generator-controls a:hover {
-    opacity: 0.6;
+.generator-controls a:hover, .generator-controls button:hover {
+   border: 1px solid #ff7f00;
 }
 
 .generator-controls>* {
@@ -37,7 +38,6 @@
 }
 
 button.fb-share-btn {
-    background-color: #7592ce;;
     grid-area: share;
     color: white;
 }
@@ -47,11 +47,9 @@ button.save-btn {
     background-color: #ff7f00;
 }
 
-.download-link {
+a.download-link {
     padding: 10px;
     border-radius: 12px;
-    background-color: #ff7f00;
-    color: black;
 }
 
 .meme-txt {
@@ -60,6 +58,7 @@ button.save-btn {
     padding-left: 20px;
     font-family: Mont;
     font-size: 18px;
+    border: 0;
 }
 
 /* Grid Areas */
@@ -100,6 +99,14 @@ button.save-btn {
     grid-area: decrease;
 }
 
+.upload-btn {
+    grid-area: upload;
+}
+
+.emoji-btn {
+    grid-area: emoji;
+}
+
 .select-font {
     font-family: Mont;
     grid-area: font;
@@ -122,6 +129,7 @@ button.save-btn {
 @media (max-width: 920px) {
     .generator-container {
         flex-direction: column;
+        padding: 10px 0 20px 0;
     }
     #my-canvas {
         margin-bottom: 20px;
@@ -133,6 +141,6 @@ button.save-btn {
         ". switch addLine removeLine ."
         "increase decrease leftAlign centerAlign rightAlign"
         "font font font strokeColor txtColor" 
-        "save . download . share";
+        "save download share upload emoji";
     }
 }

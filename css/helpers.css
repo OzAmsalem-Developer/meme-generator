@@ -37,6 +37,7 @@ a.active-nav:hover {
 .disabled:hover {
     opacity: 1 !important;
     cursor: default !important;
+    border: 1px solid transparent !important;
 }
 
 /* Darkness screen */

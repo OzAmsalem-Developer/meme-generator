@@ -19,6 +19,19 @@ function onInit() {
 
     resizeCanvas();
 
+    // Emojies btn
+    const picker = new EmojiButton({position: 'left-end', showSearch: false});
+    const button = document.querySelector('.emoji-btn');
+    picker.on('emoji', emoji => {
+    //   document.querySelector('.emoji-input').value = emoji;
+      onAddEmoji(emoji);
+    });
+
+    button.addEventListener('click', () => {
+        picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
+      });
+
+    // Initial clear
     $('.generator-container').hide();
     $('.saved-memes').hide();
     _renderGallery();
@@ -62,7 +75,6 @@ function onEditMeme(memeId) {
     setMeme(memeId);
     _openGenerator();
     _drawMeme();
-
 }
 
 function onSetMemeProp(prop, val, isLineProp = false) {
@@ -81,8 +93,9 @@ function onAddLine() {
     addLine('Edit This Text');
     _drawMeme();
     onSwitchLine();
-    $('.new-line-txt').val('');
     _memeUnsaved();
+    $('.new-line-txt').val('');
+    $('.meme-txt').focus();
 }
 
 function onRemoveLine() {
@@ -104,12 +117,19 @@ function onSwitchLine(ev) {
         }
         // The click is from the 'switch' btn
     } else switchLine();
-
+    
+    $('.select-font').val(getSelectedLineInfo('fontFamily'));
+    $( ".meme-txt" ).prop( "disabled", false );
     let txt = getSelectedLineInfo('txt');
     if (txt === 'Type your text' || txt === 'Edit This Text') {
         $('.meme-txt').attr('placeholder', txt);
-        $('.meme-txt').val('')
-    } else $('.meme-txt').val(txt);
+        $('.meme-txt').val('');
+    } else if (getSelectedLineInfo('isEmoji')) {
+        $( ".meme-txt" ).prop( "disabled", true );
+        $('.meme-txt').val('');
+        $('.meme-txt').attr('placeholder', '');
+    } 
+    else $('.meme-txt').val(txt);
     _drawMeme();
 }
 
@@ -146,6 +166,12 @@ function onSearch(keyword) {
     }
 }
 
+function onAddEmoji(emoji) {
+    addLine(emoji, true);
+    onSwitchLine();
+    _drawMeme();
+}
+
 function activeNav(elNavItem) {
     $('.nav-item').removeClass('active-nav');
     elNavItem.classList.add('active-nav');
@@ -161,6 +187,30 @@ function openGallery() {
 function onDownloadSavedMeme(data, elBtn) {
     elBtn.href = data;
     elBtn.download = 'my-meme';
+}
+
+function onInputImg() {
+    $('.file-input').click();
+}
+
+function onUploadImg(ev) {
+    loadImageFromInput(ev, setUploadedImg);
+}
+
+function loadImageFromInput(ev, onImageReady) {
+    var reader = new FileReader();
+    
+    reader.onload = function (event) {
+        var img = new Image();
+        img.onload = onImageReady.bind(null, img)
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(ev.target.files[0]);
+}
+
+function setUploadedImg(img) {
+    saveUploadedImg(img);
+    _drawUploadedImg(img);
 }
 
 function clickTxtColor() {
@@ -226,14 +276,27 @@ function _renderGallery(imgs = getImgs()) {
 
 function _drawMeme(isClean = false) {
     let meme = getMeme();
+    let imgData = getImgById(meme.selectedImgId);
+    if (imgData.isUploaded) {
+        _drawUploadedImg(imgData.img, isClean);
+        return;
+    }
     let img = new Image();
-    img.src = `img/gallery-squares/${meme.selectedImgId}.jpg`;
+    img.src = imgData.url;
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
         _drawTextLines(meme.lines);
+        if (!isClean && getSelectedLineInfo('txt').length !== 0 && 
+        !getSelectedLineInfo('isEmoji')) _drawTxtBorder(getSelectedLineInfo('area'));
+    }
+}
+
+function _drawUploadedImg(img, isClean = false) {
+    let meme = getMeme();
+    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
+        _drawTextLines(meme.lines);
         if (!isClean && getSelectedLineInfo('txt').length !== 0) 
         _drawTxtBorder(getSelectedLineInfo('area'));
-    }
 }
 
 function _drawTextLines(lines) {
@@ -252,13 +315,13 @@ function _drawTextLines(lines) {
         }
 
 
-        gCtx.lineWidth = '3';
+        gCtx.lineWidth = (line.isEmoji)? 0 : '3';
         gCtx.fillStyle = line.fillColor;
         gCtx.strokeStyle = line.strokeColor;
         gCtx.font = line.size + 'px ' + line.fontFamily;
         gCtx.textAlign = line.align;
         gCtx.fillText(line.txt, xStart, yStart);
-        gCtx.strokeText(line.txt, xStart, yStart);
+        if (!line.isEmoji) gCtx.strokeText(line.txt, xStart, yStart);
 
         setLineArea(line)
     });
@@ -317,4 +380,6 @@ function _openGenerator() {
     $('.saved-memes').hide();
     $('.generator-container').show();
     $('.nav-item').removeClass('active-nav');
+    onSwitchLine();
+    $('.meme-txt').focus();
 }

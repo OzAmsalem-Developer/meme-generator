@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +13,11 @@
     <link rel="stylesheet" href="css/generator.css">
     <link rel="stylesheet" href="css/memes.css">
     <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/about.css">
     <title>Meme Generator</title>
 </head>
+
 <body onload="onInit()">
     <datalist id="keywords">
         <option value="happy">
@@ -32,99 +36,138 @@
         <option value="putin">
         <option value="tough">
         <option value="comix">
-      </datalist>
+    </datalist>
     <div class="screen" onclick="closeNav()"></div>
 
-<header class="main-header">
-    <nav class="main-nav container flex align-center">
-        <img class="logo" src="img/logo.png" alt="logo">
-        <div class="nav-items flex justify-center align-center">
-            <a onclick="activeNav(this); openGallery();" class="nav-item">Gallery</a>
-            <a onclick="activeNav(this); openSavedMemes();" class="nav-item">Memes</a>
-            <a onclick="activeNav(this);" class="nav-item" href="#">About</a>
-        </div>
-        <div class="btn-container" onclick="toggleMenu()">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-        </div>
-    </nav>
-</header>
+    <header class="main-header">
+        <nav class="main-nav container flex align-center">
+            <img class="logo" src="img/logo.png" alt="logo">
+            <div class="nav-items flex justify-center align-center">
+                <a onclick="activeNav(this); openGallery();" class="nav-item">Gallery</a>
+                <a onclick="activeNav(this); openSavedMemes();" class="nav-item">Memes</a>
+                <a onclick="activeNav(this); openGallery();" class="nav-item" href="#about">About</a>
+            </div>
+            <div class="btn-container" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </nav>
+    </header>
 
+    <section class="gallery-container">
 
+        <section class="search grid">
+            <div class="search-container flex container items-center">
+                <input class="search-textbox" list="keywords" onkeyup="onSearch(this.value)"
+                    placeholder="Enter search keyword" type="text">
+                <div class="keywords-container flex justify-center items-center"></div>
+            </div>
+        </section>
 
-    
-<section class="gallery-container">
-    <section class="search grid">
-        <div class="search-container flex container items-center">
-            <input class="search-textbox" list="keywords" onkeyup="onSearch(this.value)" placeholder="Enter search keyword" type="text">
-            <div class="keywords-container flex justify-center items-center"></div>
-        </div>
+        <section class="imgs-container grid container"></section>
+
+        <section id="about" class="about flex justify-center align-center">
+            <img src="img/oz.jpg" alt="profil-image" class="about-img">
+            <div class="info">
+                <h4>Oz Amsalem</h4>
+                <p>I am a very talented fullstack web developer, I love to code, <br>
+                    only interested in best practices and leading freamworks like React, Vue and Express. </p>
+
+                <a href="https://www.facebook.com/people/Oz-Amsalem/1754037984" target="_blank">
+                    <img src="img/icons/facebook.png" alt="facebook">
+                </a>
+                <a href="https://github.com/OzAmsalem-Developer" target="_blank">
+                    <img src="img/icons/github.png" alt="github">
+                </a>
+                <a href="https://www.linkedin.com/in/oz-amsalem" target="_blank">
+                    <img src="img/icons/linkedin.png" alt="linkidn">
+                </a>
+            </div>
+        </section>
     </section>
 
-    <section class="imgs-container grid container"></section>
-</section>
-    
+    <section class="generator-container flex container align-center">
 
-<section class="generator-container flex container align-center">
+        <div class="canvas-container">
+            <canvas id="my-canvas" style="border: 1px solid black;" onclick="onSwitchLine(event)">
+            </canvas>
+        </div>
 
-    <div class="canvas-container">
-        <canvas id="my-canvas"  style="border: 1px solid black;" onclick="onSwitchLine(event)">
-    </canvas>
-    </div>
+        <section class="generator-controls grid">
+            <input class="meme-txt" type="text" onkeyup="onSetMemeProp('txt', this.value, true)"
+                placeholder="Edit meme text here">
+            <button class="switch-btn" title="Switch" onclick="onSwitchLine()"><img src="img/icons/switch.png"
+                    alt="switch-button"></button>
+            <button class="add-line-btn" title="Add line" onclick="onAddLine()"><img src="img/icons/add.png"
+                    alt="add-button"></button>
+            <button class="remove-line-btn" title="Remove" onclick="onRemoveLine()"><img src="img/icons/trash.png"
+                    alt="remove-button"></button>
+            <button class="align-left-btn" title="Left" onclick="onSetMemeProp('align', 'end', true)">
+                <img src="img/icons/align-to-left.png" alt="left-align-button"></button>
+            <button class="align-center-btn" title="Center" onclick="onSetMemeProp('align', 'center', true)"><img
+                    src="img/icons/center-text-alignment.png" alt="center-align-button"></button>
+            <button class="align-right-btn" title="Right" onclick="onSetMemeProp('align', 'start', true)"><img
+                    src="img/icons/align-to-right.png" alt="right-align-button"></button>
+            <button class="size-plus-btn" title="+" onclick="onSetTxtSize('+')"><img
+                    src="img/icons/increase font - icon.png" alt="increase-button"></button>
+            <button class="size-minus-btn" title="-" onclick="onSetTxtSize('-')"><img
+                    src="img/icons/decrease font - icon.png" alt="decrease-button"></button>
+                    
+            <select class="select-font" onchange="onSetMemeProp('fontFamily', this.value, true)">
+                <option value="Impact">Impact</option>
+                <option value="Ariel">Ariel</option>
+                <option value="monospace">Monospace</option>
+            </select>
 
-    <section class="generator-controls grid">
-        <input class="meme-txt" type="text" onkeyup="onSetMemeProp('txt', this.value, true)" 
-        placeholder="Edit meme text here">
-        <button class="switch-btn" onclick="onSwitchLine()"><img src="img/icons/switch.png" alt="switch-button"></button>
-        <button class="add-line-btn" onclick="onAddLine()"><img src="img/icons/add.png" alt="add-button"></button>
-        <button class="remove-line-btn" onclick="onRemoveLine()"><img src="img/icons/trash.png" alt="remove-button"></button>
+            <input type="color" class="stroke-color" onchange="onSetMemeProp('strokeColor' ,this.value, true)" hidden>
+            <button onclick="clickStrokeColor()" title="Stroke color" id="stroke-color">
+                <img src="img/icons/text stroke.png" alt="text-stroke-button"></button>
+            <input type="color" value="#ffffff" class="txt-color"
+                onchange="onSetMemeProp('fillColor', this.value, true)" hidden>
+            <button title="Fill color" onclick="clickTxtColor()" id="txt-color"><img
+                    src="img/icons/paint-board-and-brush.png" alt="txt-color-button"></button>
 
+            <button title="Save" onclick="onSaveMeme()" class="save-btn"><img src="img/icons/save.png" alt=""></button>
+            <a title="Download" class="download-link" onclick="onDownloadMeme(this)"><img src="img/icons/download.png"
+                    alt="download-button"></a>
+            <button title="Share" onclick="onShareMeme()" class="fb-share-btn"><img src="img/icons/facebook-logo.png"
+                    alt="share-to-fb"></button>
+            <button title="Upload image" onclick="onInputImg()" class="upload-btn"><img src="img/icons/upload.png"
+                    alt="upload-image"></button>
+            <button title="Add emoji" class="emoji-btn"><img src="img/icons/smiley.png" alt="add emoji"></button>
 
-        <button class="align-left-btn" onclick="onSetMemeProp('align', 'end', true)">
-            <img src="img/icons/align-to-left.png" alt="left-align-button"></button>
-        <button class="align-center-btn" onclick="onSetMemeProp('align', 'center', true)"><img src="img/icons/center-text-alignment.png" alt="center-align-button"></button>
-        <button class="align-right-btn" onclick="onSetMemeProp('align', 'start', true)"><img src="img/icons/align-to-right.png" alt="right-align-button"></button>
-        <button class="size-plus-btn" onclick="onSetTxtSize('+')"><img src="img/icons/increase font - icon.png" alt="increase-button"></button>
-        <button class="size-minus-btn" onclick="onSetTxtSize('-')"><img src="img/icons/decrease font - icon.png" alt="decrease-button"></button>
+            <input type="hidden" class="emoji-input" hidden>
+            <!-- Upload -->
+            <input type="file" class="file-input btn" name="image" onchange="onUploadImg(event)" hidden />
 
-        <select class="select-font" onchange="onSetMemeProp('fontFamily', this.value, true)">
-            <option value="Impact">Impact</option>
-            <option value="Ariel">Ariel</option>
-            <option value="monospace">Monospace</option>
-        </select>
+            <form id="share-form" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)" hidden>
+                <input name="img" id="imgData" type="hidden" />
+                <button id="share-btn" type="submit" hidden></button>
+            </form>
 
-        <input type="color" class="stroke-color" onchange="onSetMemeProp('strokeColor' ,this.value, true)" hidden>
-        <button onclick="clickStrokeColor()" id="stroke-color">
-            <img src="img/icons/text stroke.png" alt="text-stroke-button"></button>
-        <input type="color" value="#ffffff" class="txt-color" 
-        onchange="onSetMemeProp('fillColor', this.value, true)" hidden>
-        <button onclick="clickTxtColor()" id="txt-color"><img src="img/icons/paint-board-and-brush.png" alt="txt-color-button"></button>
-
-        <button onclick="onSaveMeme()" class="save-btn"><img src="img/icons/save.png" alt=""></button>
-        <a class="download-link" onclick="onDownloadMeme(this)"><img src="img/icons/download.png" alt="download-button"></a>
-        <button onclick="onShareMeme()" class="fb-share-btn"><img src="img/icons/facebook-logo.png" alt="share-to-fb"></button>
-        <form id="share-form" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)" hidden>
-            <input name="img" id="imgData" type="hidden" />
-            <button id="share-btn" type="submit"></button>
-          </form>
-
+        </section>
     </section>
-</section>
 
-<section class="saved-memes">
-    <h2 class="saved-memes-msg">There is no saved Memes yet... Create your own now!</h2>
-    <div class="memes-container grid container"></div>
-</section>
+    <section class="saved-memes">
+        <h2 class="saved-memes-msg">There is no saved Memes yet... Create your own now!</h2>
+        <div class="memes-container grid container"></div>
+    </section>
 
-<footer></footer>
+    <footer class="main-footer flex justify-center align-center">
+        <h3 class="footer-logo">memegen</h3>
+        <small>all rights reserved <br> &reg Oz Amsalem 2020</small>
+    </footer>
 
-<div class="txt-size-calculator"></div>
+    <div class="txt-size-calculator"></div>
+
 
     <script src="libs/jquery/jquery.js"></script>
+    <script src="libs/emoji-button/emoji-button.min.js"></script>
     <script src="js/upload-service.js"></script>
     <script src="js/utils-service.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

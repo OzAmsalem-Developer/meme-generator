@@ -1,0 +1,29 @@
+.main-footer {
+    height: 207px;
+    background-color: #ff7f00;
+    flex-direction: column;
+}
+
+.footer-logo {
+    font-family: Ferdoka;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+footer small {
+    font-family: Mont-thin;
+    font-size: 19px;
+    color: #ffffff;
+    text-align: center;
+}
+
+footer small br {
+    display: none;
+}
+
+@media (max-width: 920px) {
+    footer small br {
+        display: block;
+    }
+}

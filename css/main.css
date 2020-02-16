@@ -30,6 +30,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Ferdoka';
+    src: url("../fonts/ferdoka/FredokaOne-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Base */
 
 html {
@@ -46,6 +53,11 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
+h3, h4 {
+    font-weight: normal;
+    font-size: 19px;
+}
+
 button {
     font-family: Mont, sans-serif;
     font-size: 19px;
@@ -56,7 +68,6 @@ button {
 }
 
 button:hover {
-    opacity: 0.6;
     cursor: pointer;
 }
 
